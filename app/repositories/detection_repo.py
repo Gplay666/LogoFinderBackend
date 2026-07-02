@@ -2,7 +2,7 @@
 import logging
 from datetime import datetime
 from typing import Sequence
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 from app.models.detection import Detection
@@ -56,3 +56,15 @@ class DetectionRepository:
         except SQLAlchemyError as e:
             logger.error(f"Ошибка при выборке событий: {e}")
             raise
+
+    async def count(self) -> int:
+        """Возвращает общее количество записей."""
+        stmt = select(Detection)
+        result = await self.session.execute(stmt)
+        return len(result.scalars().all())
+
+    async def get_last(self) -> Detection | None:
+        """Возвращает последнее событие по времени обнаружения."""
+        stmt = select(Detection).order_by(desc(Detection.detected_at)).limit(1)
+        result = await self.session.execute(stmt)
+        return result.scalars().first()

@@ -34,3 +34,12 @@ class DetectionService:
             offset=offset,
         )
         return [DetectionResponse.model_validate(d) for d in detections]
+
+    async def get_total_count(self) -> int:
+        return await self.repo.count()
+
+    async def get_last_detection(self) -> DetectionResponse | None:
+        detection = await self.repo.get_last()
+        if detection:
+            return DetectionResponse.model_validate(detection)
+        return None

@@ -1,0 +1,44 @@
+<!-- app/templates/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Мониторинг обнаружения логотипа{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Мониторинг обнаружения логотипа</h1>
+</header>
+
+<section class="info-panel">
+    <div class="info-card">
+        <span class="info-label">Компания</span>
+        <span class="info-value">X5 Group</span>
+    </div>
+    <div class="info-card">
+        <span class="info-label">Канал</span>
+        <span class="info-value">Первый</span>
+    </div>
+    <div class="info-card">
+        <span class="info-label">Последнее обнаружение</span>
+        <span class="info-value" id="last-detection">{{ last_detected_at }}</span>
+    </div>
+    <div class="info-card">
+        <span class="info-label">Всего записей</span>
+        <span class="info-value" id="total-count">{{ total_count }}</span>
+    </div>
+</section>
+
+<section class="events-section">
+    <h2>Лента событий</h2>
+    <div id="events-list"
+         hx-get="/events/?limit=50"
+         hx-trigger="load, every 1s"
+         hx-swap="innerHTML"
+         hx-indicator="#events-loader">
+    </div>
+    <div id="events-loader" class="htmx-indicator">Загрузка...</div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+{% endblock %}
