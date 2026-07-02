@@ -1,15 +1,24 @@
-<!-- app/templates/events.html -->
 {% if events %}
-    {% for event in events %}
-    <div class="event-card">
-        <div class="event-time">
-            <span class="event-date">{{ event.detected_at.strftime('%Y-%m-%d') }}</span>
-            <span class="event-hour">{{ event.detected_at.strftime('%H:%M:%S') }}</span>
-        </div>
-        <div class="event-channel">{{ event.channel }}</div>
-        <div class="event-company">{{ event.company }}</div>
-    </div>
-    {% endfor %}
+<table class="events-table">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Время</th>
+            <th>Канал</th>
+            <th>Компания</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+        <tr>
+            <td>{{ event.detected_at.strftime('%Y-%m-%d') }}</td>
+            <td>{{ event.detected_at.strftime('%H:%M:%S') }}</td>
+            <td>{{ event.channel }}</td>
+            <td>{{ event.company }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% else %}
-    <div class="no-events">Нет событий</div>
+<div class="no-events">Нет событий</div>
 {% endif %}

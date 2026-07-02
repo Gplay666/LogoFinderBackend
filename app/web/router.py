@@ -6,7 +6,6 @@ from app.api.deps import get_detection_service
 
 router = APIRouter()
 
-# Окружение Jinja2 с отключённым кэшем
 env = Environment(loader=FileSystemLoader("app/templates"), cache_size=0)
 
 
@@ -22,19 +21,14 @@ async def index(
     service: DetectionService = Depends(get_detection_service),
 ):
     total_count = 0
-    last_detected_at = "—"
     try:
         total_count = await service.get_total_count()
-        last_detection = await service.get_last_detection()
-        if last_detection:
-            last_detected_at = last_detection.detected_at.strftime("%Y-%m-%d %H:%M:%S")
     except Exception:
         pass
 
     return render_template(
         "index.html",
         request,
-        last_detected_at=last_detected_at,
         total_count=total_count,
     )
 
