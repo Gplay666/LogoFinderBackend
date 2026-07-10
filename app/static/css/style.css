@@ -1,13 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+:root {
+    --ink: #0a0c0e;
+    --panel: #14181c;
+    --panel-alt: #1a2126;
+    --line: #262e34;
+    --text: #dfe4e7;
+    --text-muted: #7c8790;
+    --amber: #f0a83c;
+    --amber-dim: #7a5a26;
+    --green: #6fd9a0;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #1a1a2e;
-    color: #e0e0e0;
+    font-family: var(--sans);
+    background-color: var(--ink);
+    background-image:
+        radial-gradient(ellipse 800px 400px at 50% -10%, rgba(240, 168, 60, 0.06), transparent 60%);
+    color: var(--text);
     line-height: 1.6;
     min-height: 100vh;
 }
@@ -15,92 +33,220 @@ body {
 .container {
     max-width: 960px;
     margin: 0 auto;
-    padding: 30px 20px;
+    padding: 30px 20px 60px;
 }
 
+/* ===== Header: scanner strip ===== */
 header {
-    text-align: center;
-    margin-bottom: 40px;
+    position: relative;
+    text-align: left;
+    margin-bottom: 32px;
+    padding-top: 22px;
+    overflow: hidden;
+}
+
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--line);
+}
+
+header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -30%;
+    width: 30%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+    animation: sweep 3.2s linear infinite;
+}
+
+@keyframes sweep {
+    0%   { left: -30%; }
+    100% { left: 100%; }
 }
 
 h1 {
+    font-family: var(--mono);
     font-weight: 600;
-    font-size: 2.2em;
+    font-size: 1.5em;
     color: #ffffff;
-    letter-spacing: 0.5px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 
-/* Секция с лентой */
+h1::before {
+    content: "// ";
+    color: var(--amber-dim);
+}
+
+/* ===== Events panel ===== */
 .events-section {
-    background: #16213e;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 22px;
 }
 
 .events-section h2 {
-    margin-bottom: 20px;
-    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    color: var(--text-muted);
+    font-family: var(--sans);
     font-weight: 500;
-    font-size: 1.5em;
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.events-section h2::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 0 rgba(111, 217, 160, 0.6);
+    animation: pulse 1.6s ease-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(111, 217, 160, 0.5); }
+    70%  { box-shadow: 0 0 0 7px rgba(111, 217, 160, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(111, 217, 160, 0); }
+}
+
+.events-section h2 {
+    font-variant-numeric: tabular-nums;
+}
+
+.count-badge {
+    font-family: var(--mono);
+    font-weight: 600;
+    color: var(--amber);
+    background: var(--panel-alt);
+    border: 1px solid var(--amber-dim);
+    border-radius: 4px;
+    padding: 2px 8px;
 }
 
 #events-list {
     max-height: 500px;
     overflow-y: auto;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
-/* Таблица событий */
+#events-list::-webkit-scrollbar {
+    width: 8px;
+}
+#events-list::-webkit-scrollbar-track {
+    background: var(--panel);
+}
+#events-list::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 4px;
+}
+
+/* ===== Table ===== */
 .events-table {
     width: 100%;
     border-collapse: collapse;
-    background: #1a1a2e;
-    border-radius: 8px;
-    overflow: hidden;
+    font-family: var(--mono);
+    font-size: 0.92em;
 }
 
 .events-table thead th {
-    background: #0f3460;
-    color: #ffffff;
+    background: var(--panel-alt);
+    color: var(--amber);
     font-weight: 500;
-    padding: 12px 16px;
+    padding: 10px 14px;
     text-align: left;
-    font-size: 0.9em;
+    font-size: 0.78em;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #00a8ff;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--amber-dim);
+    position: sticky;
+    top: 0;
 }
 
 .events-table tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #2a2a4a;
-    color: #d0d0e0;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.events-table tbody tr:hover td {
+    background: var(--panel-alt);
 }
 
 .events-table tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* Сообщение об отсутствии событий */
-.no-events {
-    text-align: center;
-    color: #a0a0b0;
-    padding: 40px 20px;
-    font-style: italic;
-    background: #1a1a2e;
-    border-radius: 8px;
+/* dim the date, let time carry more weight — reads like a log */
+.events-table tbody td:first-child {
+    color: var(--text-muted);
 }
 
-/* Индикатор загрузки HTMX */
+/* ===== Empty state ===== */
+.no-events {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 50px 20px;
+    font-family: var(--mono);
+    font-size: 0.9em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.no-events::before {
+    content: "— ";
+    color: var(--amber-dim);
+}
+
+.no-events::after {
+    content: " —";
+    color: var(--amber-dim);
+}
+
+/* ===== HTMX loading indicator ===== */
 .htmx-indicator {
     text-align: center;
-    padding: 20px;
-    color: #00a8ff;
-    font-style: italic;
+    padding: 16px;
+    color: var(--amber);
+    font-family: var(--mono);
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
     display: none;
 }
 .htmx-request .htmx-indicator {
     display: block;
+}
+
+/* ===== Accessibility ===== */
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    header::after,
+    .events-section h2::before {
+        animation: none;
+    }
+}
+
+@media (max-width: 560px) {
+    h1 { font-size: 1.15em; }
+    .events-table thead th,
+    .events-table tbody td { padding: 8px 10px; font-size: 0.85em; }
 }

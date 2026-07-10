@@ -8,7 +8,7 @@
 </header>
 
 <section class="events-section">
-    <h2>Лента событий — всего записей: {{ total_count }}</h2>
+    <h2>Лента событий — всего записей: <span class="count-badge">{{ total_count }}</span></h2>
     <div id="events-list"
          hx-get="/events/?limit=50"
          hx-trigger="load, every 1s"
